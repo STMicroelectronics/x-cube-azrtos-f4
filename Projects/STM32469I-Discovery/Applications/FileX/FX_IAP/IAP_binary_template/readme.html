@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../../../../../_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<section id="iap_binary_template-application-description" class="col-sm-12 col-lg-8">
+<h2><b>IAP_binary_template application description</b></h2>
+<p>This is an example Application to be used with the IAP_main. This example is meant to demonstrate the base configuration that need to be used in order to successfully deploy an application with the IAP_main bootloader.</p>
+<p>Flash start address for this application is moved away from the IAP_main bootloader at the address 0x08020000. In order to configure the new start address, in IAR:</p>
+<p>This application should be configured to start from an offset into the flash that does not overlap with the IAP_main application memory sections. Particularly, linker options should be changed to set the <strong>Vector Table</strong> and the <strong>ROM START</strong> both pointing to <strong>APP_ADDRESS</strong>.</p>
+<p>Upon startup, this application will set the VTOR register with its Interrupt Vector Table starting address, so offset should be taken into account. This can be achieved by setting the offset to the defined name <strong>VECT_TABLE_OFFSET</strong> located in file <strong>system_stm32f4xx.c</strong>.</p>
+<p>This application must be generated as raw binary, this can be achieved by setting the output format of the IDE to <strong>Raw binary</strong>. The name for the binary should also be specified there as defined by <strong>FW_NAME_STRING</strong> located in “FileX/FX_IAP/IAP_main/FileX/App/app_filex.h”.</p>
+<h3 id="expacted-behaviour"><b>Expacted behaviour:</b></h3>
+<p>IAP_binary_template should toggle both LEDs.</p>
+<h3 id="error-behaviour"><b>Error behaviour:</b></h3>
+<p>On failure, red LED should toggle.</p>
+<h3 id="note"><b>Note</b></h3>
+<p>This application can be debugged using IAR by going into <strong>Project</strong> menu and click <strong>Attach to Running Target</strong>.</p>
+<p>A pre-built binary can be found under BIN directory.</p>
+</section>
+</div>
+</body>
+</html>

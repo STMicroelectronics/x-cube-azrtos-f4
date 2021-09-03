@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../../../../_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<section id="ux_host_hid-cdc_acm-application-description" class="col-sm-12 col-lg-8">
+<h2><b>Ux_Host_HID CDC_ACM Application Description </b></h2>
+<p>This application provides an example of Azure RTOS USBX stack usage on STM32F469I-Discovery. It shows how to develop a composite “USB HID CDC_ACM Host” that is able to enumerate and communicate with:</p>
+<ul>
+<li>Composite USB HID CDC_ACM device</li>
+<li>Simple HID/CDC_ACM device,</li>
+</ul>
+<p>The application is designed to behave as a composite USB HID CDC_ACM Host, the code provides the required requests to properly manage the enumeration process of a compisite HID CDC_ACM device or a simple HID/CDC_ACM device. In case of composite or a simple device, the CDC_ACM Class APIs is used to send, receive and display data on uart terminal. Also an HID Class APIs is used to decode HID reports received from a mouse or a keyboard and display data on uart terminal.</p>
+<p>The main entry function tx_application_define() is called by ThreadX during kernel start, at this stage, all USBx resources are initialized. The application creates 5 threads with different priorities :</p>
+<ul>
+<li>usbx_app_thread_entry (Priority : 25; Preemption threshold : 25) used to initialize USB OTG HAL HCD driver and start the Host.</li>
+<li>cdc_acm_send_app_thread_entry (Priority : 30; Preemption threshold : 30) used to send data from host to device.</li>
+<li>cdc_acm_recieve_app_thread_entry (Priority : 30; Preemption threshold : 30) used to receive data from the device.</li>
+<li>hid_mouse_thread_entry (Priority : 30; Preemption threshold : 30) used to decode HID reports received from a mouse.</li>
+<li>hid_keyboard_thread_entry (Priority : 30; Preemption threshold : 30) used to decode HID reports received from a keyboard.</li>
+</ul>
+<h4 id="expected-success-behavior"><b> Expected success behavior</b></h4>
+<ul>
+<li>In case of composite HID CDC_ACM device or a simple HID/CDC_ACM is plugged to STM32F469I-Discovery board, a message will be displayed on the uart console(ST-Link VCP) showing the Vendor ID and Product ID of the attached device. The host should be able to properly decode composite HID CDC_ACM class or simple HID/CDC_ACM request data sent by the device. After enumeration phase, the device will be ready to use.</li>
+</ul>
+<p>in case of a CDC_ACM - The Sent/received data are displayed on respective terminals.</p>
+<p>in case of a mouse: - (x,y) mouse position - Wheel position - Pressed mouse buttons</p>
+<p>in case of a keyboard: - Pressed key</p>
+<p>in case of Composite HID CDC_ACM - The Sent/received data are displayed on respective terminals. - (x,y) mouse position, Wheel position, Pressed mouse buttons or Pressed key in case of a Keyboard</p>
+<h4 id="error-behaviors"><b>Error behaviors</b></h4>
+<p>Errors are detected such as (Unsupported device, Enumeration Fail) and the corresponding message is displayed on the HyperTerminal.</p>
+<h4 id="assumptions-if-any"><b>Assumptions if any</b></h4>
+<p>User is familiar with USB 2.0 “Universal Serial BUS” Specification and CDC_ACM class Specification.</p>
+<h4 id="known-limitations"><b>Known limitations</b></h4>
+<p>None</p>
+<h4 id="threadx-usage-hints"><b>ThreadX usage hints</b></h4>
+<ul>
+<li>ThreadX uses the Systick as time base, thus it is mandatory that the HAL uses a separate time base through the TIM IPs.</li>
+<li>ThreadX is configured with 100 ticks/sec by default, this should be taken into account when using delays or timeouts at application. It is always possible to reconfigure it in the “tx_user.h”, the “TX_TIMER_TICKS_PER_SECOND” define,but this should be reflected in “tx_initialize_low_level.s” file too.</li>
+<li>ThreadX is disabling all interrupts during kernel start-up to avoid any unexpected behavior, therefore all system related calls (HAL, BSP) should be done either at the beginning of the application or inside the thread entry functions.</li>
+<li>ThreadX offers the “tx_application_define()” function, that is automatically called by the tx_kernel_enter() API. It is highly recommended to use it to create all applications ThreadX related resources (threads, semaphores, memory pools…) but it should not in any way contain a system API call (HAL or BSP).</li>
+<li>Using dynamic memory allocation requires to apply some changes to the linker file. ThreadX needs to pass a pointer to the first free memory location in RAM to the tx_application_define() function, using the “first_unused_memory” argument. This require changes in the linker files to expose this memory location.
+<ul>
+<li>For EWARM add the following section into the .icf file:</li>
+</ul>
+<pre><code>place in RAM_region    { last section FREE_MEM };</code></pre>
+<ul>
+<li>For MDK-ARM:</li>
+</ul>
+<pre><code>either define the RW_IRAM1 region in the &quot;.sct&quot; file
+or modify the line below in &quot;tx_low_level_initilize.s to match the memory region being used
+    LDR r1, =|Image$$RW_IRAM1$$ZI$$Limit|</code></pre>
+<ul>
+<li>For STM32CubeIDE add the following section into the .ld file:</li>
+</ul>
+<pre><code>._threadx_heap :
+  {
+     . = ALIGN(8);
+     __RAM_segment_used_end__ = .;
+     . = . + 64K;
+     . = ALIGN(8);
+   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+<pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
+In the example above the ThreadX heap size is set to 64KBytes.
+The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
+Caution: Make sure that ThreadX does not need more than the provided heap memory (64KBytes in this example).
+Read more in STM32CubeIDE User Guide, chapter: &quot;Linker script&quot;.</code></pre>
+<ul>
+<li>The “tx_initialize_low_level.s” should be also modified to enable the “USE_DYNAMIC_MEMORY_ALLOCATION” flag.</li>
+</ul></li>
+</ul>
+<h3 id="keywords"><b>Keywords</b></h3>
+<p>Connectivity, USBX Host, ThreadX, USB, Composite, CDC_ACM, HID, Mouse, Keyboard UART, USART,</p>
+<h3 id="hardware-and-software-environment"><b>Hardware and Software environment</b></h3>
+<ul>
+<li><p>This application runs on STM32F469xx devices</p></li>
+<li><p>This application has been tested with STMicroelectronics STM32F469I-Discovery boards Revision MB1189 B-03 and can be easily tailored to any other supported device and development board.</p></li>
+<li><p>STM32F469I-Discovery Set-up</p>
+<ul>
+<li>Plug the USB CDC_ACM device into the STM32F469I-Discovery board through ‘USB micro A-Male to A-Female’ cable to the connector:
+<ul>
+<li>CN13 : to use USB Full Speed OTG IP.</li>
+</ul></li>
+<li>Connect ST-Link cable to the PC USB port to display data on the HyperTerminal.</li>
+</ul></li>
+<li><p>A virtual COM port will then appear in the HyperTerminal:</p>
+<ul>
+<li>Hyperterminal configuration
+<ul>
+<li>Data Length = 8 Bits</li>
+<li>One Stop Bit</li>
+<li>No parity</li>
+<li>BaudRate = 115200 baud</li>
+<li>Flow control: None</li>
+</ul></li>
+</ul></li>
+<li><p>A second virtual COM port will then appear in the HyperTerminal when plugging the device:</p>
+<ul>
+<li>Hyperterminal configuration
+<ul>
+<li>Data Length = 8 Bits</li>
+<li>One Stop Bit</li>
+<li>No parity</li>
+<li>BaudRate = 9600 baud</li>
+<li>Flow control: None</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="how-to-use-it"><b>How to use it ?</b></h3>
+<p>In order to make the program work, you must do the following :</p>
+<ul>
+<li>Open your preferred toolchain</li>
+<li>Rebuild all files and load your image into target memory</li>
+<li>Run the application</li>
+</ul>
+<p><b>Notes</b></p>
+<ul>
+<li><p>The user has to check the list of the COM ports in Device Manager to find out the number of the COM ports that have been assigned (by OS) to the ST-Link VCP.</p></li>
+<li><p>The application uses the bypass HSE clock (STlink MCO Output) which is HSI/2 (Default configuration). It is recommended for USB Host applications on STM32F469I-Discovery board to change the USB Clock source to ST-Link V3 MCO output: HSE/3(8.33MHZ) in order to have more accurate HSE input clock. To change MCO Clock Output please follow the steps below :</p>
+<ul>
+<li>Connect to your board using Cubeprogrammer</li>
+<li>Select “Firmware upgrade”.</li>
+<li>Select “Open in update mode”.</li>
+<li>Select MCO Output : HSE/3 (8.33MHZ).</li>
+<li>Select “Upgrade”.</li>
+<li>Update the Clock configuration settings in your application code in order to obtain 48MHZ as USB clock source.</li>
+</ul></li>
+</ul>
+</section>
+</div>
+</body>
+</html>

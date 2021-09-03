@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../../../../../_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-8">
+<h2 id="example-description"><b>Example Description</b></h2>
+<p>This directory contains a binary template (in DFU format) to be loaded into Flash memory using Device Firmware Upgrade application.</p>
+<p>This file was converted to the DFU format using the “DFU File Manager Tool” included in the “DfuSe” PC software install. For more details on how to convert a .bin file to DFU format please refer to the UM0412 user manual “Getting started with DfuSe USB device firmware upgrade STMicroelectronics extension” available from the STMicroelectronics microcontroller website www.st.com.</p>
+<p>This binary is a simple LED toggling. The system Timer (Systick) is used to generate the delay. The offset address of this binary is 0x0802000 which matches the definition in DFU application “USBD_DFU_APP_DEFAULT_ADDR”.</p>
+<h2 id="hardware-and-software-environment"><b>Hardware and Software environment</b></h2>
+<ul>
+<li>This application runs on STM32F429xx devices</li>
+<li>This application has been tested with STMicroelectronics STM32F429ZI Nucleo boards Revision MB1137 B-01 and can be easily tailored to any other supported device and development board.</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

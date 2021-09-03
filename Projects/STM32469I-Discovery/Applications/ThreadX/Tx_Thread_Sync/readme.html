@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Readme</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../../../../_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<section id="tx_thread_sync-application-description" class="col-sm-12 col-lg-8">
+<h2><b>Tx_Thread_Sync application description</b></h2>
+<p>This application provides an example of Azure RTOS ThreadX stack usage, it shows how to develop an application using the ThreadX synchronization APIs. The main entry function tx_application_define() is called by ThreadX during kernel start, at this stage, the application creates 2 threads with the same priorities :</p>
+<ul>
+<li>‘ThreadOne’ (Priority : 10; Preemption Threshold : 10)</li>
+<li>‘ThreadTwo’ (Priority : 10; Preemption Threshold : 10)</li>
+</ul>
+<p>The function “Led_Toggle()” is the entry function for both threads to toggle the leds.Therefore it is considered as a “critical section” that needs protection with a ‘SyncObject’ flag in the file “app_threadx.h” Each thread is running in an infinite loop as following:</p>
+<ul>
+<li>‘ThreadOne’:
+<ul>
+<li>try to acquire the ‘SyncObject’ immediately.</li>
+<li>On Success toggle the ‘LED_GREEN’ each 500ms for 5 seconds.</li>
+<li>Release the ‘SyncObject’</li>
+<li>Sleep for 10ms.</li>
+<li>repeat the steps above</li>
+</ul></li>
+<li>‘ThreadTwo’:
+<ul>
+<li>try to acquire the ‘SyncObject’ immediately.</li>
+<li>On Success toggle the ‘LED_RED’ each 500ms for 5 seconds.</li>
+<li>Release the ‘SyncObject’</li>
+<li>Sleep for 10ms.</li>
+<li>Repeat the steps above.</li>
+</ul></li>
+</ul>
+<p>By default the ‘SyncObject’ is defined as “TX_MUTEX” .It is possible to use a binany “TX_SEMAPHORE” by tuning the compile flags in the file “app_threadx.h”.</p>
+<h4 id="expected-success-behavior"><b>Expected success behavior</b></h4>
+<ul>
+<li>‘LED_GREEN’ toggles every 500ms for 5 seconds</li>
+<li>‘LED_RED’ toggles every 500ms for 5 seconds</li>
+<li>Messages on HyperTerminal :
+<ul>
+<li>“** ThreadXXX : waiting for SyncObject !! **” : When thread is waiting for the SyncObject.</li>
+<li>“** ThreadXXX : waiting SyncObject released **” : When thread put the SyncObject.</li>
+<li>“** ThreadXXX : waiting SyncObject acquired **” : When thread get the SyncObject.</li>
+</ul></li>
+</ul>
+<h4 id="error-behaviors"><b>Error behaviors</b></h4>
+<p>‘LED_RED’ toggles every 1 second if any error occurs.</p>
+<h4 id="assumptions-if-any"><b>Assumptions if any</b></h4>
+<p>None</p>
+<h4 id="known-limitations"><b>Known limitations</b></h4>
+<p>None</p>
+<h3 id="notes"><b>Notes</b></h3>
+<ol type="1">
+<li>Some code parts can be executed in the CCMRAM (64 KB) which decreases critical task execution time, compared to code execution from Flash memory. This feature can be activated using ‘#pragma location = “.CCMRAM”’ to be placed above function declaration, or using the toolchain GUI (file options) to execute a whole source file in the CCMRAM.</li>
+</ol>
+<h4 id="threadx-usage-hints"><b>ThreadX usage hints</b></h4>
+<ul>
+<li>ThreadX uses the Systick as time base, thus it is mandatory that the HAL uses a separate time base through the TIM IPs.</li>
+<li>ThreadX is configured with 100 ticks/sec by default, this should be taken into account when using delays or timeouts at application. It is always possible to reconfigure it in the “tx_user.h”, the “TX_TIMER_TICKS_PER_SECOND” define,but this should be reflected in “tx_initialize_low_level.s” file too.</li>
+<li>ThreadX is disabling all interrupts during kernel start-up to avoid any unexpected behavior, therefore all system related calls (HAL, BSP) should be done either at the beginning of the application or inside the thread entry functions.</li>
+<li>ThreadX offers the “tx_application_define()” function, that is automatically called by the tx_kernel_enter() API. It is highly recommended to use it to create all applications ThreadX related resources (threads, semaphores, memory pools…) but it should not in any way contain a system API call (HAL or BSP).</li>
+<li>Using dynamic memory allocation requires to apply some changes to the linker file. ThreadX needs to pass a pointer to the first free memory location in RAM to the tx_application_define() function, using the “first_unused_memory” argument. This require changes in the linker files to expose this memory location.
+<ul>
+<li>For EWARM add the following section into the .icf file:</li>
+</ul>
+<pre><code>place in RAM_region    { last section FREE_MEM };</code></pre>
+<ul>
+<li>For MDK-ARM:</li>
+</ul>
+<pre><code>either define the RW_IRAM1 region in the &quot;.sct&quot; file
+or modify the line below in &quot;tx_low_level_initilize.s to match the memory region being used
+    LDR r1, =|Image$$RW_IRAM1$$ZI$$Limit|</code></pre>
+<ul>
+<li>For STM32CubeIDE add the following section into the .ld file:</li>
+</ul>
+<pre><code>._threadx_heap :
+  {
+     . = ALIGN(8);
+     __RAM_segment_used_end__ = .;
+     . = . + 64K;
+     . = ALIGN(8);
+   } &gt;RAM_D1 AT&gt; RAM_D1</code></pre>
+<pre><code>The simplest way to provide memory for ThreadX is to define a new section, see ._threadx_heap above.
+In the example above the ThreadX heap size is set to 64KBytes.
+The ._threadx_heap must be located between the .bss and the ._user_heap_stack sections in the linker script.
+Caution: Make sure that ThreadX does not need more than the provided heap memory (64KBytes in this example).
+Read more in STM32CubeIDE User Guide, chapter: &quot;Linker script&quot;.</code></pre>
+<ul>
+<li>The “tx_initialize_low_level.s” should be also modified to enable the “USE_DYNAMIC_MEMORY_ALLOCATION” flag.</li>
+</ul></li>
+</ul>
+<h3 id="keywords"><b>Keywords</b></h3>
+<p>RTOS, ThreadX, Thread, Semaphore, Mutex</p>
+<h3 id="hardware-and-software-environment"><b>Hardware and Software environment</b></h3>
+<ul>
+<li><p>This application runs on STM32F469xx devices</p></li>
+<li><p>This application has been tested with STMicroelectronics STM32F469I-Discovery boards Revision MB1189 B-03 and can be easily tailored to any other supported device and development board.</p></li>
+<li><p>A virtual COM port appears in the HyperTerminal:</p>
+<ul>
+<li>Hyperterminal configuration:
+<ul>
+<li>Data Length = 8 Bits</li>
+<li>One Stop Bit</li>
+<li>No parity</li>
+<li>BaudRate = 115200 baud</li>
+<li>Flow control: None</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="how-to-use-it"><b>How to use it ?</b></h3>
+<p>In order to make the program work, you must do the following :</p>
+<ul>
+<li>Open your preferred toolchain</li>
+<li>Rebuild all files and load your image into target memory</li>
+<li>Run the application</li>
+</ul>
+</section>
+</div>
+</body>
+</html>
