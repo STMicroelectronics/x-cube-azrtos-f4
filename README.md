@@ -59,6 +59,10 @@ By using STM32F4 Series you inherit the “Distribution and Production Use” ri
 
 For more details about license information relative to each component in this package, please refer to [LICENSE](./LICENSE.md)
 
+## Release note
+
+Details about the content of this release are available in the release note [here](https://htmlpreview.github.io/?https://github.com/STMicroelectronics/x-cube-azrtos-f4/blob/main/Release_Notes.html).
+
 
 ## Applications
 | Middleware   |  Applications                    |       Short Description      |
@@ -95,19 +99,6 @@ For more details about license information relative to each component in this pa
 |NetXDuo | Nx_MQTT_Client               | It demonstrates how to exchange data between client and server using MQTT protocol in an encrypted mode supporting TLS v1.2. [readme](./Projects/STM32F429ZI-Nucleo/Applications/NetXDuo/Nx_MQTT_Client/README.md) |
 |NetXDuo | Nx_SNTP_Client               | It demonstrates how to develop a NetX SNTP client and connect with an STNP server to get a time update. [readme](./Projects/STM32F429ZI-Nucleo/Applications/NetXDuo/Nx_SNTP_Client/README.md) |
 
-## Main changes
-
-- First official release of Azure RTOS integration in the STM32Cube Ecosystem for STM32F4 MCU series
-
-## Known limitations
-
-- USBX composite device descriptors
-   - A maximum of 2 different class driver can be selected (restriction due to limited EP numbers)
-   - A list of USB device Applications supporting auto generation of USB Device framework descriptors provided  for these USB class drivers :MSC, HID mouse, CDC ACM, CDC ECM, DFU. For the other device class drivers, user needs first to 
-     disable the device framework builder (refer to : USBx wiki section 2.2 How to customize) and provide the full set of required device descriptors.
-- NetXDuo
-   - Ethernet cable hot-plug detection not supported.
-   - User needs to point to the HAL Drivers under X-CUBE-AZRTOS-F4 install path instead of the default location when creating a NetXDuo based project.
 
 ## Troubleshooting
 **Caution**  : The issues are  **strictly limited**  to submit problems or suggestions related to the software delivered in this repository.

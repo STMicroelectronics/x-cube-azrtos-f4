@@ -57,7 +57,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define APP_QUEUE_SIZE          5
+#define APP_QUEUE_SIZE          1
 /* USER CODE END PD */
 
 /* USER CODE BEGIN 1 */
