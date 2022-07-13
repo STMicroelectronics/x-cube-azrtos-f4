@@ -21,33 +21,13 @@ Two models of publication are proposed for the STM32Cube embedded software:
 
 This **stm32f4xx_hal_driver** MCU component repository is one element of the STM32CubeF4 MCU embedded software package, providing the **HAL-LL Drivers** part.
 
-## License
-
-Copyright (c) 2016 STMicroelectronics.
-
-This software component is licensed by STMicroelectronics under BSD-3-Clause license. You may not use this file except in compliance with the License. 
-You may obtain a copy of the License [here](https://opensource.org/licenses/BSD-3-Clause).
-
 ## Release note
 
 Details about the content of this release are available in the release note [here](https://htmlpreview.github.io/?https://github.com/STMicroelectronics/stm32f4xx_hal_driver/blob/master/Release_Notes.html).
 
 ## Compatibility information
 
-In this table, you can find the successive versions of this HAL-LL Driver component, in line with the corresponding versions of the full MCU package:
-
-It is **crucial** that you use a consistent set of versions for the CMSIS Core - CMSIS Device - HAL, as mentioned in this table.
-
-HAL Driver F4 | CMSIS Device F4 | CMSIS Core | Was delivered in the full MCU package
-------------- | --------------- | ---------- | -------------------------------------
-Tag v1.7.6 | Tag v2.6.3 | Tag v5.4.0_cm4 | Tag v1.24.1 (and following, if any, till HAL tag)
-Tag v1.7.7 | Tag v2.6.4 | Tag v5.4.0_cm4 | Tag v1.24.2 (and following, if any, till HAL tag)
-Tag v1.7.8 | Tag v2.6.5 | Tag v5.4.0_cm4 | Tag v1.25.0 (and following, if any, till HAL tag)
-Tag v1.7.9 | Tag v2.6.5 | Tag v5.4.0_cm4 | Tag v1.25.1 (and following, if any, till HAL tag)
-Tag v1.7.10| Tag v2.6.5 | Tag v5.4.0_cm4 | Tag v1.25.2 (and following, if any, till HAL tag)
-Tag v1.7.11| Tag v2.6.6 | Tag v5.4.0_cm4 | Tag v1.26.0 (and following, if any, till HAL tag)
-Tag v1.7.12| Tag v2.6.6 | Tag v5.4.0_cm4 | Tag v1.26.1 (and following, if any, till HAL tag)
-Tag v1.7.13| Tag v2.6.7 | Tag v5.4.0_cm4 | Tag v1.26.2 (and following, if any, till HAL tag)
+It is **crucial** that you use a consistent set of versions for the CMSIS Core - CMSIS Device - HAL, as mentioned in [this](https://htmlpreview.github.io/?https://github.com/STMicroelectronics/STM32CubeF4/blob/master/Release_Notes.html) release note.
 
 The full **STM32CubeF4** MCU package is available [here](https://github.com/STMicroelectronics/STM32CubeF4).
 

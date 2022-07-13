@@ -2487,6 +2487,11 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_accept.c</locationURI>
 		</link>
 		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_server_socket_driver_listen.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_driver_listen.c</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_server_socket_listen.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_listen.c</locationURI>
@@ -2540,6 +2545,16 @@
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_disconnect_complete_notify.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_socket_disconnect_complete_notify.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_driver_establish.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_establish.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_driver_packet_receive.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_packet_receive.c</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_establish_notify.c</name>
@@ -2775,6 +2790,11 @@
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_udp_socket_delete.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_udp_socket_delete.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_udp_socket_driver_packet_receive.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_udp_socket_driver_packet_receive.c</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_udp_socket_info_get.c</name>
@@ -4642,6 +4662,11 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_system_initialize.c</locationURI>
 		</link>
 		<link>
+			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_system_tasks_run.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_system_tasks_run.c</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/USBX/USB/USBX/CoreSystem/ux_system_uninitialize.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_system_uninitialize.c</locationURI>
@@ -5027,9 +5052,19 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/usbx_stm32_device_controllers/ux_dcd_stm32_interrupt_handler.c</locationURI>
 		</link>
 		<link>
+			<name>Middlewares/USBX/USB/USBX/UX Device Controllers/ux_dcd_stm32_transfer_abort.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/usbx_stm32_device_controllers/ux_dcd_stm32_transfer_abort.c</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/USBX/USB/USBX/UX Device Controllers/ux_dcd_stm32_transfer_request.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/usbx_stm32_device_controllers/ux_dcd_stm32_transfer_request.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/USBX/USB/USBX/UX Device Controllers/ux_dcd_stm32_transfer_run.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/usbx_stm32_device_controllers/ux_dcd_stm32_transfer_run.c</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/USBX/USB/USBX/UX Device Controllers/ux_dcd_stm32_uninitialize.c</name>
@@ -5137,6 +5172,11 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_device_stack_set_feature.c</locationURI>
 		</link>
 		<link>
+			<name>Middlewares/USBX/USB/USBX/UX Device CoreStack/ux_device_stack_tasks_run.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_device_stack_tasks_run.c</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/USBX/USB/USBX/UX Device CoreStack/ux_device_stack_transfer_abort.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_device_stack_transfer_abort.c</locationURI>
@@ -5150,6 +5190,11 @@
 			<name>Middlewares/USBX/USB/USBX/UX Device CoreStack/ux_device_stack_transfer_request.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_device_stack_transfer_request.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/USBX/USB/USBX/UX Device CoreStack/ux_device_stack_transfer_run.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/usbx/common/core/src/ux_device_stack_transfer_run.c</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/USBX/USB/USBX/UX Device CoreStack/ux_device_stack_uninitialize.c</name>

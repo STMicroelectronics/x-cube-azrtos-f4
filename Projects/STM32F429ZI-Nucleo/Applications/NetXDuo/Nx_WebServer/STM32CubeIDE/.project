@@ -2552,6 +2552,11 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_accept.c</locationURI>
 		</link>
 		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_server_socket_driver_listen.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_driver_listen.c</locationURI>
+		</link>
+		<link>
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_server_socket_listen.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_listen.c</locationURI>
@@ -2605,6 +2610,16 @@
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_disconnect_complete_notify.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_socket_disconnect_complete_notify.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_driver_establish.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_establish.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_driver_packet_receive.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_packet_receive.c</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_tcp_socket_establish_notify.c</name>
@@ -2840,6 +2855,11 @@
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_udp_socket_delete.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_udp_socket_delete.c</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_udp_socket_driver_packet_receive.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/netxduo/common/src/nx_udp_socket_driver_packet_receive.c</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/NetXDuo/Network/NetXDuo/NX Core/nx_udp_socket_info_get.c</name>

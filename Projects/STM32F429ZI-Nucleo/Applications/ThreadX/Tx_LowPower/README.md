@@ -114,7 +114,7 @@ For keeping track of time while in low power mode, there are two possibilities:
 
 ### <b>Keywords</b>
 
-RTOS, ThreadX, Thread, PWR, Stop mode, Interrupt, EXTI, Wakeup, Low Power
+RTOS, ThreadX, Threading, PWR, Stop mode, Interrupt, EXTI, Wakeup, Low Power
 
 
 ### <b>Hardware and Software environment</b>

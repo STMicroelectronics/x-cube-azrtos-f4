@@ -1,5 +1,5 @@
 
-## <b>Ux_Host_HID CDC_ACM Application Description </b>
+## <b>Ux_Host_HID_CDC_ACM Application Description </b>
 
 This application provides an example of Azure RTOS USBX stack usage on STM32F469I-Discovery.
 It shows how to develop a composite "USB HID CDC_ACM Host" that is able to enumerate and communicate with:

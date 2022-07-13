@@ -68,4 +68,3 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr);
 }
 #endif
 #endif /* __APP_USBX_DEVICE_H__ */
-

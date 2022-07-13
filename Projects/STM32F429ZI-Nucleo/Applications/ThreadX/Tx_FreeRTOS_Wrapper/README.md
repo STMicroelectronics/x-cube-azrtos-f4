@@ -70,7 +70,7 @@ None
                
 ### <b>Keywords</b>
 
-RTOS, ThreadX, Thread, RTOS compatibility layers
+RTOS, ThreadX, Threading, RTOS compatibility layers
 
 
 ### <b>Hardware and Software environment</b>

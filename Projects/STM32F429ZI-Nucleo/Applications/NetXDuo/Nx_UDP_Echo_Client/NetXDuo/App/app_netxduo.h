@@ -83,12 +83,13 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr);
 #define DEFAULT_MEMORY_SIZE      1024
 #define DEFAULT_MAIN_PRIORITY    10
 #define DEFAULT_PRIORITY         5
+#define LINK_PRIORITY            11
 
 #define NULL_ADDRESS             0
 
 #define DEFAULT_PORT             6000
 #define UDP_SERVER_PORT          6001
-#define UDP_SERVER_ADDRESS       IP_ADDRESS(10, 157, 5, 177)
+#define UDP_SERVER_ADDRESS       IP_ADDRESS(10, 157, 5, 175)
 
 #define MAX_PACKET_COUNT         100
 #define DEFAULT_MESSAGE          "UDP Client on STM32F429-Nucleo"

@@ -37,7 +37,7 @@ extern void MX_QUADSPI_Init(void);
 static uint8_t qspi_memory_reset            (QSPI_HandleTypeDef *quadspi_handle);
 static uint8_t qspi_dummy_cyles_configure   (QSPI_HandleTypeDef *quadspi_handle);
 static uint8_t qspi_set_write_enable        (QSPI_HandleTypeDef *quadspi_handle);
-static uint8_t qspi_auto_polling_ready   (QSPI_HandleTypeDef *quadspi_handle, uint32_t timeout);
+static uint8_t qspi_auto_polling_ready      (QSPI_HandleTypeDef *quadspi_handle, uint32_t timeout);
 
 /* USER CODE BEGIN SECTOR_BUFFER */
 ULONG qspi_sector_buffer[LX_STM32_QSPI_SECTOR_SIZE / sizeof(ULONG)];

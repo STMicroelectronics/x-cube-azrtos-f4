@@ -151,7 +151,7 @@ UINT MX_USBX_Host_Init(VOID *memory_ptr)
   }
 
   /* Create the HID Keyboard App thread. */
-  if (tx_thread_create(&keyboard_app_thread, "Keyborad thread ",
+  if (tx_thread_create(&keyboard_app_thread, "Keyboard thread ",
                        hid_keyboard_thread_entry, 0, pointer,
                        USBX_APP_STACK_SIZE, 30, 30, 0,
                        TX_AUTO_START) != TX_SUCCESS)

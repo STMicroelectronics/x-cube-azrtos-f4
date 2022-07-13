@@ -34,7 +34,7 @@ extern "C" {
 /* Exported constants --------------------------------------------------------*/
 #define LX_NOR_SIMULATOR_FLASH_BASE_ADDRESS  0x08100000
 
-#define LX_NOR_SIMULATOR_FLASH_SIZE          1024 * 1024
+#define LX_NOR_SIMULATOR_FLASH_SIZE          1024*1024
 
 #define LX_NOR_SIMULATOR_SECTOR_SIZE         512
 

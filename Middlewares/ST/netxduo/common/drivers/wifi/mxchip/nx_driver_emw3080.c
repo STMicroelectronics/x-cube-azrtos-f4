@@ -162,6 +162,16 @@ UINT _nx_driver_emw3080_disable(NX_IP_DRIVER *driver_req_ptr)
     NULL,
     NULL);
 
+  if (MX_WIFI_Disconnect(pMxWifiObj))
+  {
+    return NX_DRIVER_ERROR;
+  }
+
+  if (MX_WIFI_DeInit(pMxWifiObj))
+  {
+    return NX_DRIVER_ERROR;
+  }
+
   return NX_SUCCESS;
 }
 
@@ -177,7 +187,6 @@ UINT _nx_driver_emw3080_packet_send(NX_PACKET *packet_ptr)
     return NX_DRIVER_ERROR;
   }
 
-  // TODO: chained packets not currently supported
   if (packet_ptr->nx_packet_next)
   {
     NX_DRIVER_PHYSICAL_HEADER_REMOVE(packet_ptr);

@@ -65,6 +65,7 @@ extern "C" {
 
 #define DEFAULT_MAIN_PRIORITY        10
 #define DEFAULT_PRIORITY             5
+#define LINK_PRIORITY                11
 
 #define NULL_ADDRESS                 0
 #define DNS_SERVER_ADDRESS           IP_ADDRESS(1, 1, 1, 1)

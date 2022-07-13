@@ -53,7 +53,6 @@ Reply from 192.168.1.2:6000, time 47 ms OK
 #### <b>Assumptions if any</b>
 
 - The Application is using the DHCP to acquire IP address, thus a DHCP server should be reachable by the board in the LAN used to test the application.
-- The application does not support Ethernet cable hot-plug, therefore the board should be connected to the LAN before running the application.
 - The application is configuring the Ethernet IP with a static predefined <i>MAC Address</i>, make sure to change it in case multiple boards are connected on the same LAN to avoid any potential network traffic issues.
 - The <i>MAC Address</i> is defined in the `main.c`
 

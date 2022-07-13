@@ -375,6 +375,7 @@
           <state>$PROJ_DIR$/../../../../../../Middlewares/ST/threadx/common/inc/</state>
           <state>$PROJ_DIR$/../../../../../../Middlewares/ST/threadx/ports/cortex_m4/iar/inc/</state>
           <state>$PROJ_DIR$/../../../../../../Drivers/BSP/STM32F4xx_Nucleo_144</state>
+          <state>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/crypto_libraries/ports/cortex_m4/ac6/inc/</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1143,9 +1144,6 @@
     <group>
       <name>STM32F4xx_HAL_Driver</name>
       <file>
-        <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</name>
       </file>
       <file>
@@ -1183,6 +1181,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.c</name>
@@ -2692,6 +2693,18 @@
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nxd_nd_cache_ip_address_find.c</name>
         </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_driver_listen.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_establish.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_packet_receive.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_udp_socket_driver_packet_receive.c</name>
+        </file>
       </group>
       <group>
         <name>Network/NetXDuo/TLS</name>
@@ -2838,6 +2851,12 @@
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_dtls_session_reset.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_dtls_session_sliding_window_check.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_dtls_session_sliding_window_update.c</name>
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/nx_secure/src/nx_secure_dtls_session_send.c</name>

@@ -225,7 +225,7 @@ uint8_t *USBD_Get_String_Framework(ULONG *Length)
 }
 
 /**
-  * @brief  language_id_framework
+  * @brief  USBD_Get_Language_Id_Framework
   *         Return the language_id_framework
   * @param  Length : Length of Language_Id_Framework
   * @retval Pointer to language_id_framework buffer

@@ -5,9 +5,8 @@
 #include "txm_module.h"
 
 /* Define constants. */
-#define DEFAULT_STACK_SIZE         1024
-#define DEFAULT_BYTE_POOL_SIZE     9120
-#define DEFAULT_BLOCK_POOL_SIZE    1024
+#define DEFAULT_STACK_SIZE         512
+#define DEFAULT_BYTE_POOL_SIZE     2048
 
 #define READONLY_REGION            0x20010000
 #define READWRITE_REGION           0x20010100
@@ -36,7 +35,6 @@ _Pragma("data_alignment=32") ULONG  default_module_pool_space[DEFAULT_BYTE_POOL_
 
 TX_THREAD               *thread_0;
 TX_BYTE_POOL            *byte_pool_0;
-TX_BLOCK_POOL           *block_pool_0;
 TX_QUEUE                *resident_queue;
 
 /* Function prototypes*/
@@ -55,7 +53,6 @@ void    default_module_start(ULONG id)
        the control block(s).  */
     txm_module_object_allocate((void*)&thread_0, sizeof(TX_THREAD));
     txm_module_object_allocate((void*)&byte_pool_0, sizeof(TX_BYTE_POOL));
-    txm_module_object_allocate((void*)&block_pool_0, sizeof(TX_BLOCK_POOL));
 
     /* Create a byte memory pool from which to allocate the thread stacks.  */
     tx_byte_pool_create(byte_pool_0, "module byte pool 0", (UCHAR*)default_module_pool_space, DEFAULT_BYTE_POOL_SIZE);
@@ -68,21 +65,6 @@ void    default_module_start(ULONG id)
             pointer, DEFAULT_STACK_SIZE,
             2, 2, TX_NO_TIME_SLICE, TX_AUTO_START);
 
-    /* Allocate the memory for a small block pool. */
-    tx_byte_allocate(byte_pool_0, (VOID **) &pointer,
-        DEFAULT_BLOCK_POOL_SIZE, TX_NO_WAIT);
-
-    /* Create a block memory pool. */
-    tx_block_pool_create(block_pool_0, "module block pool 0",
-        sizeof(ULONG), pointer, DEFAULT_BLOCK_POOL_SIZE);
-
-    /* Allocate a block. */
-    tx_block_allocate(block_pool_0, (VOID **) &pointer,
-        TX_NO_WAIT);
-
-    /* Release the block back to the pool. */
-    tx_block_release(pointer);
-
 }
 
 /* Module main thread function */
@@ -91,7 +73,6 @@ void thread_0_entry(ULONG thread_input)
   UINT status;
   ULONG s_msg;
   ULONG readbuffer;
-
   /* Request access to the queue from the module manager */
   status = txm_module_object_pointer_get(TXM_QUEUE_OBJECT, "Resident Queue", (VOID **)&resident_queue);
 
@@ -124,18 +105,8 @@ void thread_0_entry(ULONG thread_input)
   *(ULONG *)READONLY_REGION = 0xABABABAB;
   tx_thread_sleep(TX_TIMER_TICKS_PER_SECOND / 10);
 
-  /* Notify module manager about job finish */
-  s_msg = PROCESSING_FINISHED;
-  tx_queue_send(resident_queue, &s_msg, TX_NO_WAIT);
-
   /* Suppress unused variable warning */
   UNUSED(readbuffer);
-
-  /* Stay here, waiting for the module manager to stop and unload the module*/
-  while(1)
-  {
-    tx_thread_sleep(10);
-  }
 }
 
 void Error_Handler(void)

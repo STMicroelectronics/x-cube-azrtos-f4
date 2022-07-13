@@ -55,6 +55,7 @@ extern "C" {
 #define DEFAULT_MAIN_PRIORITY       10
 #define DEFAULT_PRIORITY            5  
 #define THREAD_MEMORY_SIZE          2 * DEFAULT_MEMORY_SIZE  
+#define LINK_PRIORITY               11
 
 /* MQTT Client configuration */
 #define MQTT_CLIENT_STACK_SIZE      1024 * 10

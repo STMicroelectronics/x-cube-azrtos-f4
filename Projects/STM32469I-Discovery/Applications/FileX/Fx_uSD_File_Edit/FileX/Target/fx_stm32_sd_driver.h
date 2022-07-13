@@ -41,7 +41,7 @@ extern TX_SEMAPHORE transfer_semaphore;
 #define FX_STM32_SD_INIT                                 1
 
 /* Use the SD DMA API */
-#define FX_STM32_SD_DMA_API                              0
+#define FX_STM32_SD_DMA_API                              1
 
 /* SDIO instance to be used by FileX */
 #define FX_STM32_SD_INSTANCE                             0

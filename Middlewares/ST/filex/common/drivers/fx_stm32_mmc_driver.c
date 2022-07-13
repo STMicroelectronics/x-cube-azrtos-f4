@@ -19,10 +19,10 @@
  * otherwise it is 4-byte aligned to match the DMA alignment constraints
  */
 
-#if (FX_STM32_SD_CACHE_MAINTENANCE == 1)
-static UCHAR scratch[FX_STM32_SD_DEFAULT_SECTOR_SIZE] __attribute__ ((aligned (32)));
+#if (FX_STM32_MMC_CACHE_MAINTENANCE == 1)
+static UCHAR scratch[FX_STM32_MMC_DEFAULT_SECTOR_SIZE] __attribute__ ((aligned (32)));
 #else
-static UCHAR scratch[FX_STM32_SD_DEFAULT_SECTOR_SIZE] __attribute__ ((aligned (4)));
+static UCHAR scratch[FX_STM32_MMC_DEFAULT_SECTOR_SIZE] __attribute__ ((aligned (4)));
 #endif
 
 UINT  _fx_partition_offset_calculate(void  *partition_sector, UINT partition, ULONG *partition_start, ULONG *partition_size);
@@ -100,9 +100,6 @@ VOID  fx_stm32_mmc_driver(FX_MEDIA *media_ptr)
         if (status == 0)
         {
           is_initialized = 1;
-#endif
-
-#if (FX_STM32_MMC_INIT == 1)
         }
         else
         {
@@ -117,20 +114,23 @@ VOID  fx_stm32_mmc_driver(FX_MEDIA *media_ptr)
 
   case FX_DRIVER_UNINIT:
     {
+      media_ptr->fx_media_driver_status = FX_SUCCESS;
+
 #if (FX_STM32_MMC_INIT == 1)
-      if (fx_stm32_mmc_deinit(FX_STM32_MMC_INSTANCE) != 0)
+      status = fx_stm32_mmc_deinit(FX_STM32_MMC_INSTANCE);
+
+      if (status == 0)
       {
-        media_ptr->fx_media_driver_status = FX_IO_ERROR;
+        is_initialized = 0;
       }
       else
       {
-        media_ptr->fx_media_driver_status = FX_SUCCESS;
+        media_ptr->fx_media_driver_status = FX_IO_ERROR;
       }
-
-      is_initialized = 0;
 #endif
-      /* call post deinit processing  */
+      /* call post deinit processing */
       FX_STM32_MMC_POST_DEINIT(media_ptr);
+
       break;
     }
 

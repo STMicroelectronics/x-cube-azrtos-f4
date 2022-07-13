@@ -89,7 +89,7 @@ None
          
 ### <b>Keywords</b>
 
-RTOS, ThreadX, Thread, CMSIS RTOS, Semaphore, Mutex
+RTOS, ThreadX, Threading, CMSIS RTOS, Semaphore, Mutex
 
 
 

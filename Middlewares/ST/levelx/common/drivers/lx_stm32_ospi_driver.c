@@ -18,7 +18,7 @@ static UINT  lx_ospi_driver_erase_block(ULONG block, ULONG erase_count);
 static UINT  lx_ospi_driver_block_erased_verify(ULONG block);
 
 #ifndef LX_DIRECT_READ
-extern ULONG ospi_sector_buffer[LX_STM32_QSPI_SECTOR_SIZE/sizeof(ULONG)];
+extern ULONG ospi_sector_buffer[LX_STM32_OSPI_SECTOR_SIZE/sizeof(ULONG)];
 #endif
 
 static UINT is_initialized = LX_FALSE;
@@ -37,10 +37,6 @@ static UINT check_status(void)
     if (lx_stm32_ospi_get_status(LX_STM32_OSPI_INSTANCE) == 0)
     {
       return LX_SUCCESS;
-    }
-    else
-    {
-      return LX_ERROR;
     }
   }
 
@@ -62,8 +58,6 @@ UINT lx_stm32_ospi_initialize(LX_NOR_FLASH *nor_flash)
   if (is_initialized == LX_FALSE)
   {
 
-#if (LX_STM32_OSPI_INIT == 1)
-
     ret = lx_stm32_ospi_lowlevel_init(LX_STM32_OSPI_INSTANCE);
 
     if (ret != 0)
@@ -79,8 +73,6 @@ UINT lx_stm32_ospi_initialize(LX_NOR_FLASH *nor_flash)
     {
       return LX_ERROR;
     }
-#endif
-
 #endif
 
     if (check_status() != LX_SUCCESS)
@@ -118,7 +110,7 @@ UINT lx_stm32_ospi_initialize(LX_NOR_FLASH *nor_flash)
   }
 
   /* call post init routine*/
-  LX_STM32_OSPI_POST_INIT;
+  LX_STM32_OSPI_POST_INIT();
 
   /* Return success.  */
   return LX_SUCCESS;

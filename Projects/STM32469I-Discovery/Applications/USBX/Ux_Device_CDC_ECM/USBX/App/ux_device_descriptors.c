@@ -174,7 +174,7 @@ uint8_t *USBD_Get_Device_Framework_Speed(uint8_t Speed, ULONG *Length)
 }
 
 /**
-  * @brief  USBD_Get_Language_Id_Framework
+  * @brief  USBD_Get_String_Framework
   *         Return the language_id_framework
   * @param  Length : Length of String_Framework
   * @retval Pointer to language_id_framework buffer

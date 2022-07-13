@@ -32,8 +32,12 @@
 
 /* Exported constants --------------------------------------------------------*/
 
-/* USER CODE BEGIN EC */
+/* This define enables the call of nx_eth_init() from the interface layer.*/
+/* #define NX_DRIVER_ETH_HW_IP_INIT */
 
+/* USER CODE BEGIN EC */
+/* This define defines the period of checking the connection of network cable.*/
+#define NX_ETH_CABLE_CONNECTION_CHECK_PERIOD 600
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -44,27 +48,28 @@
 /* Exported functions prototypes ---------------------------------------------*/
 
 extern ETH_HandleTypeDef heth;
-extern void MX_ETH_Init(void);
 
+#define eth_handle  heth
+
+#ifdef NX_DRIVER_ETH_HW_IP_INIT
+extern void MX_ETH_Init(void);
+#define nx_eth_init MX_ETH_Init
+#endif /* #define NX_DRIVER_ETH_HW_IP_INIT */
+
+ /* Enable the legacy Ethernet API for STM32F4 */
+ #define STM32_ETH_HAL_LEGACY
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-
-#define eth_handle heth
-#define nx_eth_init MX_ETH_Init
-
- /* Enable the legacy Ethernet API for STM32F4 */
- #define STM32_ETH_HAL_LEGACY
-
 /* USER CODE BEGIN PD */
 
 /* USER CODE END PD */
 
-/* USER CODE BEGIN 1 */
+/* USER CODE BEGIN 0 */
 
-/* USER CODE END 1 */
+/* USER CODE END 0 */
 
 #ifdef __cplusplus
 }

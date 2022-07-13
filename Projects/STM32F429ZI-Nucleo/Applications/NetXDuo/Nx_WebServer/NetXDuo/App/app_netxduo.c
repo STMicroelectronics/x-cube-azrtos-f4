@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include   "nx_stm32_eth_config.h"
 
 /* USER CODE END Includes */
 
@@ -36,6 +36,8 @@
 TX_THREAD AppMainThread;
 TX_THREAD AppWebServerThread;
 TX_THREAD LedThread;
+TX_THREAD AppLinkThread;
+
 void LedThread_Entry(ULONG thread_input);
 TX_SEMAPHORE Semaphore;
 TX_QUEUE  MsgQueueOne;
@@ -65,7 +67,7 @@ NX_WEB_HTTP_SERVER HTTPServer;
 /* the web server reads the web content from the flash, a FX_MEDIA instance is required */
 FX_MEDIA                Flash_Media;
 
-/* Buffer for FileX FX_MEDIA sector cache. this should be 4-bytes aligned to avoid 
+/* Buffer for FileX FX_MEDIA sector cache. this should be 4-bytes aligned to avoid
    unaligned access issues */
 uint32_t DataBuffer[512];
 ULONG                free_bytes;
@@ -94,6 +96,7 @@ static uint8_t nx_server_pool[SERVER_POOL_SIZE];
 /* WEB HTTP server thread entry */
 static void  App_Main_Thread_Entry(ULONG thread_input);
 static void  nx_server_thread_entry(ULONG thread_input);
+static VOID App_Link_Thread_Entry(ULONG thread_input);
 
 /* DHCP state change notify callback */
 static VOID ip_address_change_notify_callback(NX_IP *ip_instance, VOID *ptr);
@@ -289,11 +292,26 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr)
   {
     return TX_POOL_ERROR;
   }
-  
+
   /* create the LED control thread */
   ret = tx_thread_create(&LedThread, "LED control Thread", LedThread_Entry, 0, pointer, DEFAULT_MEMORY_SIZE,
                          TOGGLE_LED_PRIORITY, TOGGLE_LED_PRIORITY, TX_NO_TIME_SLICE, TX_DONT_START);
-  
+
+  if (ret != TX_SUCCESS)
+  {
+    return NX_NOT_ENABLED;
+  }
+
+  /* Allocate the memory for Link thread   */
+  if (tx_byte_allocate(byte_pool, (VOID **) &pointer,2 *  DEFAULT_MEMORY_SIZE, TX_NO_WAIT) != TX_SUCCESS)
+  {
+    return TX_POOL_ERROR;
+  }
+
+  /* create the Link thread */
+  ret = tx_thread_create(&AppLinkThread, "App Link Thread", App_Link_Thread_Entry, 0, pointer, 2 * DEFAULT_MEMORY_SIZE,
+                         LINK_PRIORITY, LINK_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START);
+
   if (ret != TX_SUCCESS)
   {
     return NX_NOT_ENABLED;
@@ -401,7 +419,7 @@ UINT webserver_request_notify_callback(NX_WEB_HTTP_SERVER *server_ptr, UINT requ
   NX_PARAMETER_NOT_USED(server_ptr);
   NX_PARAMETER_NOT_USED(request_type);
   NX_PARAMETER_NOT_USED(packet_ptr);
- 
+
   /*
   * At each new request we toggle the green led, but in a real use case this callback can serve
   * to trigger more advanced tasks, like starting background threads or gather system info
@@ -412,7 +430,7 @@ UINT webserver_request_notify_callback(NX_WEB_HTTP_SERVER *server_ptr, UINT requ
   {
     /* Let HTTP server know the response has been sent. */
     tx_thread_performance_system_info_get(&resumptions, &suspensions, NULL, NULL, NULL, NULL, NULL, NULL, NULL, &non_idle_returns, &idle_returns);
-    
+
     sprintf (data, "%lu,%lu,%lu,%lu", resumptions, suspensions, idle_returns, non_idle_returns);
   }
   else if (strcmp(resource, "/GetNXData") == 0)
@@ -424,23 +442,23 @@ UINT webserver_request_notify_callback(NX_WEB_HTTP_SERVER *server_ptr, UINT requ
   {
    sprintf(data, "%lu.%lu.%lu.%lu,%u", (IpAddress >> 24) & 0xff, (IpAddress >> 16) & 0xff, (IpAddress >> 8) & 0xff, IpAddress& 0xff, CONNECTION_PORT);
   }
-  
+
     else if (strcmp(resource, "/GetTxCount") == 0)
   {
     tx_thread_info_get(&AppMainThread, &main_thread_name, NULL, &main_thread_count, NULL, NULL, NULL, NULL, NULL);
     tx_thread_info_get(&AppWebServerThread, &server_thread_name, NULL, &server_thread_count, NULL, NULL, NULL, NULL, NULL);
-    tx_thread_info_get(&LedThread, &led_thread_name, NULL, &led_thread_count, NULL, NULL, NULL, NULL, NULL);  
+    tx_thread_info_get(&LedThread, &led_thread_name, NULL, &led_thread_count, NULL, NULL, NULL, NULL, NULL);
     sprintf (data, "%s,%lu ,%s,%lu,%s,%lu", main_thread_name, main_thread_count, server_thread_name, server_thread_count,led_thread_name, led_thread_count);
-  
+
   }
     else if (strcmp(resource, "/GetNXPacket") == 0)
   {
     sprintf (data, "%lu", EthPool.nx_packet_pool_available);
-  }   
+  }
     else if (strcmp(resource, "/GetNXPacketlen") == 0)
   {
     sprintf (data, "%lu", (EthPool.nx_packet_pool_available_list)->nx_packet_length );
-  }   
+  }
   else if (strcmp(resource, "/LedOn") == 0)
   {
     printf(" Loggling Green Led On \n");
@@ -458,17 +476,17 @@ UINT webserver_request_notify_callback(NX_WEB_HTTP_SERVER *server_ptr, UINT requ
   }
   /* Derive the client request type from the client request. */
   nx_web_http_server_type_get(server_ptr, server_ptr -> nx_web_http_server_request_resource, temp_string, &string_length);
-  
+
   /* Null terminate the string. */
   temp_string[string_length] = '\0';
-  
+
   /* Now build a response header with server status is OK and no additional header info. */
   status = nx_web_http_server_callback_generate_response_header(server_ptr, &resp_packet_ptr, NX_WEB_HTTP_STATUS_OK,
                                                                 strlen(data), temp_string, NX_NULL);
-  
+
   status = nx_packet_data_append(resp_packet_ptr, data, strlen(data), server_ptr->nx_web_http_server_packet_pool_ptr, NX_WAIT_FOREVER);
   /* Now send the packet! */
-  
+
   status = nx_web_http_server_callback_packet_send(server_ptr, resp_packet_ptr);
   if (status != NX_SUCCESS)
   {
@@ -512,18 +530,18 @@ void nx_server_thread_entry(ULONG thread_input)
   {
     /* Print Media Opening Success. */
     printf("Fx media successfully opened.\n");
-  
+
 
     fx_media_space_available(&Flash_Media, &free_bytes);
-    
+
     /* 16GB in KB */
     total_bytes = SIZE_16GB;
-    
-    used_bytes = total_bytes - (free_bytes / 1024); 
+
+    used_bytes = total_bytes - (free_bytes / 1024);
   }
-  
+
   status = nx_web_http_server_mime_maps_additional_set(&HTTPServer,&my_mime_maps[0], 4);
-  
+
   /* Start the WEB HTTP Server. */
   status = nx_web_http_server_start(&HTTPServer);
 
@@ -553,4 +571,62 @@ void LedThread_Entry(ULONG thread_input)
     tx_thread_sleep(50);
   }
 }
+
+/**
+* @brief  Link thread entry
+* @param thread_input: ULONG thread parameter
+* @retval none
+*/
+static VOID App_Link_Thread_Entry(ULONG thread_input)
+{
+  ULONG actual_status;
+  UINT linkdown = 0, status;
+
+  while(1)
+  {
+    /* Get Physical Link stackavailtus. */
+    status = nx_ip_interface_status_check(&EthIP, 0, NX_IP_LINK_ENABLED,
+                                      &actual_status, 10);
+
+    if(status == NX_SUCCESS)
+    {
+      if(linkdown == 1)
+      {
+        linkdown = 0;
+        status = nx_ip_interface_status_check(&EthIP, 0, NX_IP_ADDRESS_RESOLVED,
+                                      &actual_status, 10);
+        if(status == NX_SUCCESS)
+        {
+          /* The network cable is connected again. */
+          printf("The network cable is connected again.\n");
+          /* Print Webserver Client is available again. */
+          printf("Webserver Client is available again.\n");
+        }
+        else
+        {
+          /* The network cable is connected. */
+          printf("The network cable is connected.\n");
+          /* Send command to Enable Nx driver. */
+          nx_ip_driver_direct_command(&EthIP, NX_LINK_ENABLE,
+                                      &actual_status);
+          /* Restart DHCP Client. */
+          nx_dhcp_stop(&DHCPClient);
+          nx_dhcp_start(&DHCPClient);
+        }
+      }
+    }
+    else
+    {
+      if(0 == linkdown)
+      {
+        linkdown = 1;
+        /* The network cable is not connected. */
+        printf("The network cable is not connected.\n");
+      }
+    }
+
+    tx_thread_sleep(NX_ETH_CABLE_CONNECTION_CHECK_PERIOD);
+  }
+}
+
 /* USER CODE END 1 */

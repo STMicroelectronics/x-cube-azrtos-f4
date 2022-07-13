@@ -1137,9 +1137,6 @@
     <group>
       <name>STM32F4xx_HAL_Driver</name>
       <file>
-        <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c</name>
       </file>
       <file>
@@ -1177,6 +1174,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$/../../../../../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c</name>
@@ -2670,6 +2670,18 @@
         </file>
         <file>
           <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nxd_nd_cache_ip_address_find.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_server_socket_driver_listen.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_establish.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_tcp_socket_driver_packet_receive.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$/../../../../../../Middlewares/ST/netxduo/common/src/nx_udp_socket_driver_packet_receive.c</name>
         </file>
       </group>
     </group>

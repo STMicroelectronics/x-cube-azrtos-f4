@@ -81,7 +81,7 @@ None
          
 ### <b>Keywords</b>
 
-RTOS, ThreadX, Thread, Event flags, Preemption threshold
+RTOS, ThreadX, Threading, Event flags, Preemption threshold
 
 
 ### <b>Hardware and Software environment</b>
